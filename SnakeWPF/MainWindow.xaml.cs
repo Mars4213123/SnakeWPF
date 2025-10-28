@@ -75,6 +75,23 @@ namespace SnakeWPF
             
             }
         }
+        public static void Send(string datagram) {
+            UdpClient sender = new UdpClient();
+            IPEndPoint endPoint = new IPEndPoint(remoteIPAddress, remotePort);
+            try
+            {
+                byte[] bytes = Encoding.UTF8.GetBytes(datagram);
+                sender.Send(bytes, bytes.Length, endPoint);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Возникло исключение: " + ex.ToString() + "\n " + ex.Message);
+            }
+            finally
+            {
+                sender.Close();
+            }
+        }
         public void OpenPage(Page OpenPage) {
             frame.Navigate(OpenPage);
         }
