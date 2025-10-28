@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Diagnostics;
 
 namespace SnakeWPF
 {
@@ -24,8 +25,8 @@ namespace SnakeWPF
     public partial class MainWindow : Window
     {
         public static MainWindow mainWindow;
-        public ViewModelUserSettings ViewModelUserSettings = new ViewModelUserSettings();
-        public ViewModelGames ViewModelGames = null;
+        public ViewModelUserSettings viewModelUserSettings = new ViewModelUserSettings();
+        public ViewModelGames viewModelGames = null;
         public static IPAddress remoteIPAddress = IPAddress.Parse("127.0.0.1");
         public static int remotePort = 5001;
         public Thread tRec;
@@ -40,6 +41,42 @@ namespace SnakeWPF
         public void StartReceiver() {
             tRec = new Thread(new ThreadStart(Receiver));
             tRec.Start();
+        }
+        public void Receiver() {
+            receivingUdpClient = new UdpClient(int.Parse(viewModelUserSettings.Port));
+            IPEndPoint RemoteIpEbdPoint = null;
+            try {
+                while (true) {
+                    byte[] receiveBytes = receivingUdpClient.Receive(ref RemoteIpEbdPoint);
+                    string returnData = Encoding.UTF8.GetString(receiveBytes);
+                    if (viewModelGames == null)
+                    {
+                        Dispatcher.Invoke(() =>
+                        {
+                            OpenPage(Game);
+                        });
+                    }
+
+                    viewModelGames = JsonConvert.DeserializeObject<ViewModelGames>(returnData.ToString());
+                    if (viewModelGames.SnakesPlayers.GameOver == true)
+                    {
+                        Dispatcher.Invoke(() =>
+                        {
+                            OpenPage(new Pages.EndGame());
+                        });
+                    }
+                    else {
+                        Game.CreateUI();
+                    }
+                }
+            }
+            catch (Exception ex) {
+                Debug.WriteLine($"Возникло исключение: {ex.Message}");
+            
+            }
+        }
+        public void OpenPage(Page OpenPage) {
+            frame.Navigate(OpenPage);
         }
     }
 }
