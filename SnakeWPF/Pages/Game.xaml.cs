@@ -20,6 +20,7 @@ namespace SnakeWPF.Pages
     /// </summary>
     public partial class Game : Page
     {
+        public int StepCadr = 0;
         public Game()
         {
             InitializeComponent();
@@ -27,6 +28,7 @@ namespace SnakeWPF.Pages
 
         public void CreateUI()
         {
+            Dispatcher
         }
     }
 }
