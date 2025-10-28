@@ -37,5 +37,9 @@ namespace SnakeWPF
             InitializeComponent();
             mainWindow = this;
         }
+        public void StartReceiver() {
+            tRec = new Thread(new ThreadStart(Receiver));
+            tRec.Start();
+        }
     }
 }
