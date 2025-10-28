@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Diagnostics;
+using System.ComponentModel;
 
 namespace SnakeWPF
 {
@@ -41,6 +42,7 @@ namespace SnakeWPF
         public void StartReceiver() {
             tRec = new Thread(new ThreadStart(Receiver));
             tRec.Start();
+            OpenPage(Home);
         }
         public void Receiver() {
             receivingUdpClient = new UdpClient(int.Parse(viewModelUserSettings.Port));
@@ -94,6 +96,31 @@ namespace SnakeWPF
         }
         public void OpenPage(Page OpenPage) {
             frame.Navigate(OpenPage);
+        }
+
+        private void EventKeyUp(object sender, KeyEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(viewModelUserSettings.IPAddress) &&
+            !string.IsNullOrEmpty(viewModelUserSettings.Port) &&
+            (viewModelGames != null && !viewModelGames.SnakesPlayers.GameOver))
+            {
+                        if (e.Key == Key.Up)
+                            Send($"Up|{JsonConvert.SerializeObject(viewModelUserSettings)}");
+                        else if (e.Key == Key.Down)
+                            Send($"Down|{JsonConvert.SerializeObject(viewModelUserSettings)}");
+                        else if (e.Key == Key.Left)
+                            Send($"Left|{JsonConvert.SerializeObject(viewModelUserSettings)}");
+                        else if (e.Key == Key.Right)
+                            Send($"Right|{JsonConvert.SerializeObject(viewModelUserSettings)}");
+            }
+        }
+
+
+
+        private void QuitApplication(object sender, CancelEventArgs e)
+        {
+            receivingUdpClient.Close();
+            tRec.Abort();
         }
     }
 }
