@@ -37,13 +37,13 @@ namespace SnakeWPF.Pages
 
                 canvas.Children.Clear();
 
-                for (int iPoint = MainWindow.mainWindow.ViewModelGames.SnakesPlayers.Points.Count - 1; iPoint >= 0; iPoint--)
+                for (int iPoint = MainWindow.mainWindow.viewModelGames.SnakesPlayers.Points.Count - 1; iPoint >= 0; iPoint--)
                 {
-                    Snakes.Point SnakePoint = MainWindow.mainWindow.ViewModelGames.SnakesPlayers.Points[iPoint];
+                    Snakes.Point SnakePoint = MainWindow.mainWindow.viewModelGames.SnakesPlayers.Points[iPoint];
 
                     if (iPoint != 0)
                     {
-                        Snakes.Point NextSnakePoint = MainWindow.mainWindow.ViewModelGames.SnakesPlayers.Points[iPoint - 1];
+                        Snakes.Point NextSnakePoint = MainWindow.mainWindow.viewModelGames.SnakesPlayers.Points[iPoint - 1];
 
                         if (SnakePoint.X > NextSnakePoint.X || SnakePoint.X < NextSnakePoint.X)
                         {
@@ -105,8 +105,8 @@ namespace SnakeWPF.Pages
                         Width = 40,
                         Height = 40,
                         Margin = new Thickness(
-                            MainWindow.mainWindow.ViewModelGames.Points.X - 20,
-                            MainWindow.mainWindow.ViewModelGames.Points.Y - 20, 0, 0),
+                            MainWindow.mainWindow.viewModelGames.Points.X - 20,
+                            MainWindow.mainWindow.viewModelGames.Points.Y - 20, 0, 0),
                         Fill = myBrush
                     };
 
@@ -118,8 +118,8 @@ namespace SnakeWPF.Pages
                     Width = 40,
                     Height = 40,
                     Margin = new Thickness(
-                    MainWindow.mainWindow.ViewModelGames.Points.X - 20,
-                    MainWindow.mainWindow.ViewModelGames.Points.Y - 20, 0, 0),
+                    MainWindow.mainWindow.viewModelGames.Points.X - 20,
+                    MainWindow.mainWindow.viewModelGames.Points.Y - 20, 0, 0),
                     Fill = Brushes.Red,
                     Stroke = Brushes.Black
                 };
